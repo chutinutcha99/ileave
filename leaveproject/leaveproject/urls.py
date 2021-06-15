@@ -15,11 +15,26 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
-from . import views
+from django.urls import path, include
+from leaveappdata import views
+from django.conf import settings
+from django.conf.urls.static import static
+from leaveusers import views as leaveuser_views
+from django.contrib.auth import views as authviews
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('leaveappdata/', include('leaveappdata.urls')),
+    path('register/', leaveuser_views.register, name='register'),
+    path('profile/', leaveuser_views.profile, name='profile'),
+    path('login/', authviews.LoginView.as_view(template_name='leaveusers/login.html'), name='login'),
+    path('logout/', authviews.LogoutView.as_view(template_name='leaveusers/logout.html'), name='logout'),
     path('', views.home, name='home'),
+    path('leave_form/', views.leave_form, name='leave_form')
+    
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

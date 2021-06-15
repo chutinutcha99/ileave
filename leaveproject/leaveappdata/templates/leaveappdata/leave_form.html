@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">เพิ่มคำขออนุมัติลา</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+    </div>
+
+    <!-- Content Row -->    
+    <div class="row">
+        <div class="col-xl-12">
+            {% if messages %}
+            <div class="alert alert-danger" role="alert">
+                {% for message in messages %}
+                <b>{{message}}</b>
+                {% endfor %}
+            </div>
+            {% endif %}
+                <form action="" method="POST" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="">ประเภทการลา</label>
+                        {{ form.leave_sort_name | as_crispy_field }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">แผนก</label>
+                        {{ form.leave_department | as_crispy_field}}
+                    </div>
+                    <div class="form-group">
+                        <label for="leave_reason">เหตุผลการลา</label>
+                        {{ form.leave_reason | as_crispy_field }}
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="start_date">วันที่เริ่มต้น</label>
+                            {{ form.start_date | as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="duration1">ระยะเวลา</label>
+                            {{ form.duration1 | as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="end_date">วันที่สิ้นสุด</label>
+                            {{ form.end_date | as_crispy_field }}
+                            <!--<input type="text" class="form-control" data-provide="datepicker" data-date-language="th-th" id="end_date">-->
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="duration2">ระยะเวลา</label>
+                            {{ form.duration2 | as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="upload">แนบไฟล์</label>
+                        <input type="file" class="form-control-file" id="upload" name="upload" aria-describedby="fileHelp">
+                        <small id="fileHelp" class="form-text text-muted">อัปโหลดไฟล์ jpg, jpeg, png, pdf</small> 
+                    </div>
+                    <div class="form-group">
+                        <label for="leave_contact">การติดต่อระหว่างลา</label>
+                        {{ form.leave_contact | as_crispy_field }}
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            {{ form.updated | as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ form.created | as_crispy_field }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-4">บันทึก</button>
+                </form>
+        </div>
+    </div>
+    <!-- End Content Row -->
+</div>
+<!-- End Page Content -->
+{% endblock %}
