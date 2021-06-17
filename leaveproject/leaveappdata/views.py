@@ -27,7 +27,7 @@ def leave_form(request):
 
 @login_required
 def showdata_approved(request):
-    Leave_Form = LeaveForm.objects.all()
-    print(Leave_Form)
-    return render(request, 'leaveappdata/showdata_approved.html', {'Leave_Form': Leave_Form})
+    leaveappdata_leave_form = Leave_Form.objects.all()
+    print(leaveappdata_leave_form)
+    return render(request, 'leaveappdata/showdata_approved.html', {'leaveform': leaveappdata_leave_form})
 
