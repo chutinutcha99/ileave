@@ -1,3 +1,6 @@
+import numpy as np
+import datetime as dt
+
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -27,7 +30,16 @@ def leave_form(request):
 
 @login_required
 def showdata_approved(request):
-    leaveappdata_leave_form = Leave_Form.objects.all()
-    print(leaveappdata_leave_form)
-    return render(request, 'leaveappdata/showdata_approved.html', {'leaveform': leaveappdata_leave_form})
+    showdata = Leave_Form.objects.all()
+    for dt in showdata:
+        if dt.user_id == request.user.username:
+            start_date = dt.date(2021, 1, 1)
+            end_date = dt.date(2021, 12, 31)
 
+            days = np.busday_count(start_date, end_date)
+
+            print(days)
+
+    context = {'showdata': showdata}
+
+    return render(request, 'leaveappdata/showdata_approved.html', days, context)

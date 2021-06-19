@@ -24,14 +24,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                   {% for leaveform in Leave_Form %} 
+                   {% for showdata in showdata %} 
                   <tr>
-                    <th scope="row">{{leaveform.id}}</th>
-                    <td>{{leaveform.leave_sort_name}}</td>
-                    <td>{{leaveform.start_date}}</td>
+                    <th scope="row">{{showdata.id}}</th>
+                    <td>{{showdata.created}}</td>
+                    <td>{{showdata.leave_sort_name}}</td>
+                    <td>{{showdata.start_date}}</td>
                     <td></td>
-                    <td>2</td>
-                    <td>ไข้หวัดใหญ่</td>
+                    <td>{{lshowdata.leave_reason}}</td>
                   </tr>
                   {% endfor %}
                 </tbody>
