@@ -32,9 +32,6 @@ urlpatterns = [
     path('login/', authviews.LoginView.as_view(template_name='leaveusers/login.html'), name='login'),
     path('logout/', authviews.LogoutView.as_view(template_name='leaveusers/logout.html'), name='logout'),
     path('', views.home, name='home'),
-    path('leave_form/', views.leave_form, name='leave_form'),
-    path('showdata_approved/', views.showdata_approved, name='showdata_approved')
-    
 ]
 
 if settings.DEBUG:

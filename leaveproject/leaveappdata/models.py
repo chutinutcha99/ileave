@@ -1,7 +1,7 @@
 import datetime
-from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
+import numpy as np
 
 
 # Create your models here.
@@ -33,6 +33,13 @@ DURATION2 = (
     ('ครึ่งบ่าย', 'ครึ่งบ่าย'),
 )
 
+STATUSES_CHOICES = (
+    ('รออนุมัติ', 'รออนุมัติ'),
+    ('อนุมัติ', 'อนุมัติ'),
+    ('ไม่อนุมัติ', 'ไม่อนุมัติ'),
+)
+
+
 class Leave_Form(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     leave_sort_name = models.CharField(max_length=200, choices=SORT_NAME, default='ลากิจส่วนตัว')
@@ -44,14 +51,40 @@ class Leave_Form(models.Model):
     duration2 = models.CharField(max_length=100, choices=DURATION2, default='เต็มวัน')
     upload = models.FileField(upload_to='file_uploads')
     leave_contact = models.CharField(max_length=200)
+    status = models.CharField(max_length=200, choices=STATUSES_CHOICES, default='รออนุมัติ')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     created = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+    '''def status_update(self):
+        self.status = 'รออนุมัติ'
+        self.save()'''
+
+
+    def days_leave(self):
+        start_date = self.start_date
+        end_date = self.end_date
+
+        return np.busday_count(start_date, end_date) + 1
 
     class Meta:
         db_table = "leaveappdata_leave_form"
     
     def __str__(self):
         return self.leave_sort_name
+
+class Settings_Sort_Form(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    leaveform = models.OneToOneField(Leave_Form, on_delete=models.CASCADE, default='')
+    leave_sort_name = models.CharField(max_length=200, default='')
+    leave_conditions = models.TextField(blank=True, null=True)
+    leave_days = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        db_table = "leaveappdata_settings_sort_form"
+
+    def __str__(self):
+        return self.leave_sort_name
+
 
     
 

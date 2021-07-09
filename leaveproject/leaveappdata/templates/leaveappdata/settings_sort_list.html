@@ -1,12 +1,10 @@
-{% extends 'base.html'   %}
-
-{% load thaidate %}
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">อนุมัติ</h1>
+        <h1 class="h3 mb-0 text-gray-800">ตั้งค่าประเภทการลา</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
     </div>
@@ -18,24 +16,18 @@
                 <thead class="thead-light">
                   <tr>
                     <th scope="col">ลำดับที่</th>  
-                    <th scope="col">วันที่ทำรายการ</th>
                     <th scope="col">ประเภทการลา</th>
-                    <th scope="col">วันที่ลา</th>
-                    <th scope="col">จำนวนวัน</th>
-                    <th scope="col">เหตุผล</th>
-                    <th scope="col">สถานะ</th>
+                    <th scope="col">จำนวนวันลา</th>
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
-                   {% for showdata in showdata_a %} 
+                   {% for showdata in showdata_r %} 
                   <tr>
                     <th scope="row">{{showdata.id}}</th>
-                    <td>{{showdata.created|thaidate:"d M Y"}}</td>
                     <td>{{showdata.leave_sort_name}}</td>
-                    <td>{{showdata.start_date|thaidate:"d M Y"}} - {{showdata.end_date|thaidate:"d M Y"}}</td>
                     <td>{{showdata.days_leave}}</td>
-                    <td>{{showdata.leave_reason}}</td>
-                    <td>{{showdata.status}}</td>
+                    <td><a href="{% url 'approve_leave_form' showdata.id 1 %}" class="btn btn-success" name="edit" id="edit" value="edit">แก้ไข</a></td>
                   </tr>
                   {% endfor %}
                 </tbody>

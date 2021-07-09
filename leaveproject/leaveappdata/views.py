@@ -1,16 +1,21 @@
-import numpy as np
-import datetime as dt
-
 from django.shortcuts import redirect, render
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from .forms import LeaveForm
-from leaveappdata.models import Leave_Form
+from .forms import LeaveForm, SettingsSortForm
+from leaveappdata.models import Leave_Form, Settings_Sort_Form
+from django.db.models import Q
 
 # Create your views here.
 @login_required
 def home(request):
     return render(request, 'leaveappdata/home.html')
+
+def ChangeActions(user):
+
+    if user.groups.filter(Q(name = 'HR') | Q(name = 'Supervisor')).exists():
+        return True
+    return False
+        
 
 @login_required
 def leave_form(request):
@@ -29,17 +34,65 @@ def leave_form(request):
     return render(request, 'leaveappdata/leave_form.html', {'form': form})
 
 @login_required
+def showdata_pending(request):
+    showdata_p = Leave_Form.objects.filter(status='รออนุมัติ')
+    
+    context = {'showdata_p': showdata_p}
+    return render(request, 'leaveappdata/showdata_pending.html', context)
+
+@login_required
 def showdata_approved(request):
-    showdata = Leave_Form.objects.all()
-    for dt in showdata:
-        if dt.user_id == request.user.username:
-            start_date = dt.date(2021, 1, 1)
-            end_date = dt.date(2021, 12, 31)
+    showdata_a = Leave_Form.objects.filter(status='อนุมัติ')
 
-            days = np.busday_count(start_date, end_date)
+    context = {'showdata_a': showdata_a}
+    return render(request, 'leaveappdata/showdata_approved.html', context)
 
-            print(days)
+@login_required
+def showdata_rejected(request):
+    showdata_r = Leave_Form.objects.filter(status='ไม่อนุมัติ')
 
-    context = {'showdata': showdata}
+    context = {'showdata_r': showdata_r}
+    return render(request, 'leaveappdata/showdata_rejected.html', context)
 
-    return render(request, 'leaveappdata/showdata_approved.html', days, context)
+@login_required
+def approve_leave_form(id, approve = 1):
+    approve_leave = Leave_Form.objects.get(id = id)
+    print(approve_leave)
+    if approve == 0:
+        approve_leave.status = 'ไม่อนุมัติ'
+        approve_leave.save()
+        return redirect('/showdata_rejected/')
+    elif approve == 1:
+        approve_leave.status = 'อนุมัติ'
+        approve_leave.save()
+        return redirect('/showdata_approved/')
+    
+
+@login_required
+@user_passes_test(ChangeActions, login_url='/')
+def list_leave(request):
+    approve_leave = Leave_Form.objects.filter(status='รออนุมัติ')
+
+    context = {'approve_leave': approve_leave}
+    return render(request, 'leaveappdata/list_leave.html', context)
+
+
+def settings_sort_list(request):
+    return render(request, 'leaveappdata/settings_sort_list.html')
+
+
+def settings_sort_form(request):
+    if request.method == 'POST':
+        form = SettingsSortForm(request.POST)
+        if form.is_valid():
+            leaveappdata = form.save(commit=False)
+            leaveappdata.user = request.user
+            leaveappdata.save()
+            messages.success(request, f'บันทึกประเภทการลาเรียบร้อยแล้ว')
+            return redirect('settings_sort_form')
+        else:
+            print('Error :', form.errors)
+    else:
+        form = SettingsSortForm()
+    return render(request, 'leaveappdata/settings_sort_form.html', {'form':form})
+
