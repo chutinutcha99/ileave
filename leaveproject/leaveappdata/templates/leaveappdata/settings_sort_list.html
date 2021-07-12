@@ -22,12 +22,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                   {% for showdata in showdata_r %} 
+                   {% for showdata in sort_list %} 
                   <tr>
                     <th scope="row">{{showdata.id}}</th>
                     <td>{{showdata.leave_sort_name}}</td>
-                    <td>{{showdata.days_leave}}</td>
-                    <td><a href="{% url 'approve_leave_form' showdata.id 1 %}" class="btn btn-success" name="edit" id="edit" value="edit">แก้ไข</a></td>
+                    <td>{{showdata.leave_days}}</td>
+                    <td><a href="{% url 'settings_sort_edit' showdata.id %}" class="btn btn-success" name="edit" id="edit" value="edit">แก้ไข</a></td>
                   </tr>
                   {% endfor %}
                 </tbody>

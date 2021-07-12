@@ -1,7 +1,7 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from .forms import LeaveForm, SettingsSortForm
+from .forms import LeaveForm, SettingsSortEdit, SettingsSortForm
 from leaveappdata.models import Leave_Form, Settings_Sort_Form
 from django.db.models import Q
 
@@ -11,7 +11,6 @@ def home(request):
     return render(request, 'leaveappdata/home.html')
 
 def ChangeActions(user):
-
     if user.groups.filter(Q(name = 'HR') | Q(name = 'Supervisor')).exists():
         return True
     return False
@@ -77,9 +76,11 @@ def list_leave(request):
     return render(request, 'leaveappdata/list_leave.html', context)
 
 
-def settings_sort_list(request):
-    return render(request, 'leaveappdata/settings_sort_list.html')
+def showdata_rejected(request):
+    showdata_r = Leave_Form.objects.filter(status='ไม่อนุมัติ')
 
+    context = {'showdata_r': showdata_r}
+    return render(request, 'leaveappdata/showdata_rejected.html', context)
 
 def settings_sort_form(request):
     if request.method == 'POST':
@@ -95,4 +96,29 @@ def settings_sort_form(request):
     else:
         form = SettingsSortForm()
     return render(request, 'leaveappdata/settings_sort_form.html', {'form':form})
+
+
+def settings_sort_list(request):
+    sort_list = Settings_Sort_Form.objects.all()
+
+    context = {'sort_list': sort_list}
+    return render(request, 'leaveappdata/settings_sort_list.html', context)
+
+
+def settings_sort_edit(request, id=None):
+    sort_edit = Settings_Sort_Form.objects.get(id = id)
+    if request.method == 'POST':
+        form = SettingsSortEdit(request.POST, instance=sort_edit)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'ประเภทการลาแก้ไขเรียบร้อยแล้ว')
+            return redirect('settings_sort_edit')
+        else:
+            print('Error :', form.errors)
+    else:
+        form : SettingsSortEdit(instance=sort_edit)
+    return render(request, 'leaveappdata/settings_sort_edit.html', {'form': form})
+
+
+
 

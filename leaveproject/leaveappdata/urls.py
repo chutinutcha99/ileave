@@ -11,5 +11,6 @@ urlpatterns = [
     path('list_leave/',views.list_leave, name='list_leave'),
     path('settings_sort_list/',views.settings_sort_list, name='settings_sort_list'),
     path('settings_sort_form/',views.settings_sort_form, name='settings_sort_form'),
+    path('settings_sort_edit/<int:id>/',views.settings_sort_edit, name='settings_sort_edit'),
 ]
 

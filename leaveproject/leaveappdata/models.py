@@ -5,7 +5,18 @@ import numpy as np
 
 
 # Create your models here.
-SORT_NAME = (
+class Settings_Sort_Form(models.Model):
+    leave_sort_name = models.CharField(max_length=200, default='')
+    leave_days = models.CharField(max_length=2)
+
+    class Meta:
+        db_table = "leaveappdata_settings_sort_form"
+
+    def __str__(self):
+        return self.leave_sort_name
+
+
+'''SORT_NAME = (
     ('ลากิจส่วนตัว', 'ลากิจส่วนตัว'),
     ('ลาคลอดบุตร', 'ลาคลอดบุตร'),
     ('ลาป่วย', 'ลาป่วย'),
@@ -13,7 +24,7 @@ SORT_NAME = (
     ('ลาเข้าตรวจรับเลือกทหารหรือเข้ารับการเตรียมพล', 'ลาเข้าตรวจรับเลือกทหารหรือเข้ารับการเตรียมพล'),
     ('ลาไปช่วยเหลือภรรยาที่คลอดบุตร', 'ลาไปช่วยเหลือภรรยาที่คลอดบุตร'),
     ('ลาไปศึกษา ฝึกอบรม ปฏิบัติการวิจัย หรือดูงาน', 'ลาไปศึกษา ฝึกอบรม ปฏิบัติการวิจัย หรือดูงาน'),
-)
+)'''
 
 DEPARTMENT_NAME = (
     ('บริหาร', 'บริหาร'),
@@ -42,7 +53,7 @@ STATUSES_CHOICES = (
 
 class Leave_Form(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    leave_sort_name = models.CharField(max_length=200, choices=SORT_NAME, default='ลากิจส่วนตัว')
+    leave_sort_name = models.ForeignKey(Settings_Sort_Form, on_delete=models.CASCADE)
     leave_department = models.CharField(max_length=200, choices=DEPARTMENT_NAME, default='บริหาร')
     leave_reason = models.CharField(max_length=200)
     start_date = models.DateField(default=datetime.date.today)
@@ -72,18 +83,6 @@ class Leave_Form(models.Model):
     def __str__(self):
         return self.leave_sort_name
 
-class Settings_Sort_Form(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    leaveform = models.OneToOneField(Leave_Form, on_delete=models.CASCADE, default='')
-    leave_sort_name = models.CharField(max_length=200, default='')
-    leave_conditions = models.TextField(blank=True, null=True)
-    leave_days = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        db_table = "leaveappdata_settings_sort_form"
-
-    def __str__(self):
-        return self.leave_sort_name
 
 
     

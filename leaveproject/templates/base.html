@@ -97,7 +97,22 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{% url 'list_leave' %}">รายงาน คำขออนุมัติลา</a>
-                        
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Settings List and Departments list -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseList"
+                    aria-expanded="true" aria-controls="collapseList">
+                    <i class="fas fa-fw fa-file-alt"></i>
+                    <span>ระบบรายการ</span>
+                </a>
+                <div id="collapseList" class="collapse" aria-labelledby="headingList"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{% url 'settings_sort_list' %}">รายการ ประเภทการลา</a>
+                        <a class="collapse-item" href="{% url 'settings_sort_edit' %}">แก้ไขประเภทการลา</a>
                     </div>
                 </div>
             </li>

@@ -12,7 +12,7 @@ def register(request):
         if form.is_valid():
             form.save()
             messages.success(request, f'บัญชีผู้ใช้ถูกสร้างเรียบร้อยแล้ว')
-            return redirect('home')
+            return redirect('register')
     else:
         form = UserRegisterForm()
     return render(request, 'leaveusers/register.html', {'form': form})
