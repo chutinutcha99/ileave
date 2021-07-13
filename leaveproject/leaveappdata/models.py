@@ -7,7 +7,7 @@ import numpy as np
 # Create your models here.
 class Settings_Sort_Form(models.Model):
     leave_sort_name = models.CharField(max_length=200, default='')
-    leave_days = models.CharField(max_length=2)
+    leave_days = models.CharField(max_length=3)
 
     class Meta:
         db_table = "leaveappdata_settings_sort_form"

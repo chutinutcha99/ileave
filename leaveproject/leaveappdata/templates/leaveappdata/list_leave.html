@@ -34,7 +34,7 @@
                     <td>{{showdata.start_date|thaidate:"d M Y"}} - {{showdata.end_date|thaidate:"d M Y"}}</td>
                     <td>{{showdata.days_leave}}</td>
                     <td><a href="{% url 'approve_leave_form' showdata.id 1 %}" class="btn btn-success" name="approve" id="approve" value="approve">อนุมัติ</a>
-                        <a href="{% url 'approve_leave_form' showdata.id 0 %}" class="btn btn-warning" name="reject" id="reject" value="reject">ไม่อนุมัติ</a></td>
+                        <a href="{% url 'approve_leave_form' showdata.id 0 %}" class="btn btn-danger" name="reject" id="reject" value="reject">ไม่อนุมัติ</a></td>
                   </tr>
                   {% endfor %}
                 </tbody>
