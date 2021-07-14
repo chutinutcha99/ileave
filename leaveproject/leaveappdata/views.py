@@ -112,7 +112,6 @@ def deleteSort(request, id):
         if request.method == 'POST':
 
             delete_sort.delete()
-            messages.success(request, f'ลบข้อมูลเรียบร้อยแล้ว')
             return redirect('setting_sort_list')
 
         
@@ -132,5 +131,4 @@ def deleteSort(request, id):
     else:
         form = SettingsSortEdit(instance=sort_edit)
     return render(request, 'leaveappdata/settings_sort_edit.html', {'form': form})'''
-
 

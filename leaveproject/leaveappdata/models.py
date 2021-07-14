@@ -5,6 +5,8 @@ import numpy as np
 
 
 # Create your models here.
+
+# Settings_Sort_Form 
 class Settings_Sort_Form(models.Model):
     leave_sort_name = models.CharField(max_length=200, default='')
     leave_days = models.CharField(max_length=3)

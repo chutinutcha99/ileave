@@ -27,8 +27,8 @@
                     <th scope="row">{{showdata.id}}</th>
                     <td>{{showdata.leave_sort_name}}</td>
                     <td>{{showdata.leave_days}}</td>
-                    <td><a href="{% url 'settings_sort_form' %}" class="btn btn-success" name="add" id="add" value="add">เพิ่ม</a>
-                        <a href="{% url 'delete_sort' %}" class="btn btn-danger" name="delete" id="delete" value="delete">ลบ</a></td>
+                    <td><a href="{% url 'settings_sort_form' showdata.id %}" class="btn btn-success" name="add" id="add" value="add">เพิ่ม</a>
+                        <a href="{% url 'delete_sort' showdata.id %}" class="btn btn-danger" name="delete" id="delete" value="delete">ลบ</a></td>
                   </tr>
                   {% endfor %}
                 </tbody>
