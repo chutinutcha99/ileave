@@ -114,8 +114,8 @@ def deleteSort(request, id):
             delete_sort.delete()
             return redirect('setting_sort_list')
 
-        
-        return render(request, 'leaveappdata/delete_sort.html')
+        context = {'delete_sort': delete_sort}
+        return render(request, 'leaveappdata/delete_sort.html', context)
 
 
 '''def settings_sort_edit(request, id=None):
