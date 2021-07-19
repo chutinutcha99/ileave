@@ -18,6 +18,17 @@ class Settings_Sort_Form(models.Model):
         return self.leave_sort_name
 
 
+class Settings_Department_Form(models.Model):
+    leave_department = models.CharField(max_length=200)
+
+    class Meta:
+        db_table = "leaveappdata_settings_department_form"
+
+    def __str__(self):
+        return self.leave_department
+
+
+
 '''SORT_NAME = (
     ('ลากิจส่วนตัว', 'ลากิจส่วนตัว'),
     ('ลาคลอดบุตร', 'ลาคลอดบุตร'),
@@ -56,7 +67,7 @@ STATUSES_CHOICES = (
 class Leave_Form(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     leave_sort_name = models.ForeignKey(Settings_Sort_Form, on_delete=models.CASCADE)
-    leave_department = models.CharField(max_length=200, choices=DEPARTMENT_NAME, default='บริหาร')
+    leave_department = models.ForeignKey(Settings_Department_Form, on_delete=models.CASCADE)
     leave_reason = models.CharField(max_length=200)
     start_date = models.DateField(default=datetime.date.today)
     duration1 = models.CharField(max_length=100, choices=DURATION1, default='เต็มวัน')

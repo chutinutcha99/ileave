@@ -1,8 +1,7 @@
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib import messages
-from .forms import LeaveForm, SettingsSortForm
-from leaveappdata.models import Leave_Form, Settings_Sort_Form
+from .forms import LeaveForm, SettingsSortForm, SettingsDepartmentForm
+from leaveappdata.models import Leave_Form, Settings_Sort_Form, Settings_Department_Form
 from django.db.models import Q
 
 # Create your views here.
@@ -24,8 +23,8 @@ def leave_form(request):
             leaveappdata = form.save(commit=False)
             leaveappdata.user = request.user
             leaveappdata.save()
-            messages.success(request, f'บันทึกข้อมูลการลาเรียบร้อยแล้ว')
-            return redirect('leave_form')
+            #messages.success(request, f'บันทึกข้อมูลการลาเรียบร้อยแล้ว')
+            return redirect('leaveappdata:list_leave')
         else:
             print('Error :', form.errors)
     else:
@@ -60,11 +59,11 @@ def approve_leave_form(id, approve = 1):
     if approve == 0:
         approve_leave.status = 'ไม่อนุมัติ'
         approve_leave.save()
-        return redirect('/showdata_rejected/')
+        return redirect('/leaveappdata:showdata_rejected/')
     elif approve == 1:
         approve_leave.status = 'อนุมัติ'
         approve_leave.save()
-        return redirect('/showdata_approved/')
+        return redirect('/leaveappdata:showdata_approved/')
     
 
 @login_required
@@ -76,13 +75,14 @@ def list_leave(request):
     return render(request, 'leaveappdata/list_leave.html', context)
 
 
+@login_required
 def showdata_rejected(request):
     showdata_r = Leave_Form.objects.filter(status='ไม่อนุมัติ')
 
     context = {'showdata_r': showdata_r}
     return render(request, 'leaveappdata/showdata_rejected.html', context)
 
-
+@login_required
 def settings_sort_form(request):
     if request.method == 'POST':
         form = SettingsSortForm(request.POST)
@@ -90,32 +90,64 @@ def settings_sort_form(request):
             leaveappdata = form.save(commit=False)
             leaveappdata.user = request.user
             leaveappdata.save()
-            messages.success(request, f'บันทึกประเภทการลาเรียบร้อยแล้ว')
-            return redirect('settings_sort_form')
+            return redirect('leaveappdata:settings_sort_list')
         else:
             print('Error :', form.errors)
     else:
         form = SettingsSortForm()
     return render(request, 'leaveappdata/settings_sort_form.html', {'form':form})
 
-
+@login_required
 def settings_sort_list(request):
     sort_list = Settings_Sort_Form.objects.all()
 
     context = {'sort_list': sort_list}
     return render(request, 'leaveappdata/settings_sort_list.html', context)
 
+@login_required
 def deleteSort(request, id):
-        #delete_sort = get_object_or_404(Settings_Sort_Form, id = id)
         delete_sort = Settings_Sort_Form.objects.get(id = id)
         print(delete_sort)
         if request.method == 'POST':
 
             delete_sort.delete()
-            return redirect('setting_sort_list')
+            return redirect('leaveappdata:settings_sort_list')
+        
+        return render(request, 'leaveappdata/delete_sort.html')
 
-        context = {'delete_sort': delete_sort}
-        return render(request, 'leaveappdata/delete_sort.html', context)
+
+@login_required
+def settings_department_form(request):
+    if request.method == 'POST':
+        form = SettingsDepartmentForm(request.POST)
+        if form.is_valid():
+            leaveappdata = form.save(commit=False)
+            leaveappdata.user = request.user
+            leaveappdata.save()
+            return redirect('leaveappdata:settings_department_list')
+        else:
+            print('Error :', form.errors)
+    else:
+        form = SettingsDepartmentForm()
+    return render(request, 'leaveappdata/settings_department_form.html', {'form':form})
+
+@login_required
+def settings_department_list(request):
+    department_list = Settings_Department_Form.objects.all()
+
+    context = {'department_list': department_list}
+    return render(request, 'leaveappdata/settings_department_list.html', context)
+
+@login_required
+def deleteDepartment(request, id):
+        delete_department = Settings_Department_Form.objects.get(id = id)
+        print(delete_department)
+        if request.method == 'POST':
+
+            delete_department.delete()
+            return redirect('leaveappdata:settings_department_list')
+        
+        return render(request, 'leaveappdata/delete_department.html')
 
 
 '''def settings_sort_edit(request, id=None):

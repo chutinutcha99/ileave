@@ -20,6 +20,9 @@
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static 'css/datepicker.css' %}">
 
+    <!-- DataTables CSS-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
@@ -33,6 +36,9 @@
     <script src="{% static 'js/bootstrap-datepicker-thai.js' %}"></script>
     <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
     <script src="{% static 'js/locales/bootstrap-datepicker.th.js' %}"></script>
+
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 </head>
 <body id="page-top">
 
@@ -77,11 +83,11 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{% url 'showdata_pending' %}">รออนุมัติ</a>
-                        <a class="collapse-item" href="{% url 'showdata_approved' %}">อนุมัติ</a>
-                        <a class="collapse-item" href="{% url 'showdata_rejected' %}">ไม่อนุมัติ</a>
+                        <a class="collapse-item" href="{% url 'leaveappdata:showdata_pending' %}">รออนุมัติ</a>
+                        <a class="collapse-item" href="{% url 'leaveappdata:showdata_approved' %}">อนุมัติ</a>
+                        <a class="collapse-item" href="{% url 'leaveappdata:showdata_rejected' %}">ไม่อนุมัติ</a>
                         <a class="collapse-item" href="">สถิติการลา</a>
-                        <a class="collapse-item" href="{% url 'leave_form' %}">เพิ่ม คำขออนุมัติลา</a>
+                        <a class="collapse-item" href="{% url 'leaveappdata:leave_form' %}">เพิ่ม คำขออนุมัติลา</a>
                     </div>
                 </div>
             </li>
@@ -96,7 +102,7 @@
                 <div id="collapseReport" class="collapse" aria-labelledby="headingReport"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{% url 'list_leave' %}">รายงาน คำขออนุมัติลา</a>
+                        <a class="collapse-item" href="{% url 'leaveappdata:list_leave' %}">รายงาน คำขออนุมัติลา</a>
                     </div>
                 </div>
             </li>
@@ -111,7 +117,8 @@
                 <div id="collapseList" class="collapse" aria-labelledby="headingList"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{% url 'settings_sort_list' %}">รายการ ประเภทการลา</a>
+                        <a class="collapse-item" href="{% url 'leaveappdata:settings_sort_list' %}">รายการ ประเภทการลา</a>
+                        <a class="collapse-item" href="{% url 'leaveappdata:settings_department_list' %}">รายการ แผนก</a>
                     </div>
                 </div>
             </li>
@@ -126,31 +133,35 @@
                 <div id="collapseSettings" class="collapse" aria-labelledby="headingSettings"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{% url 'settings_sort_form' %}">เพิ่มประเภทการลา</a>
-                        <a class="collapse-item" href="#">เพิ่มแผนก</a>
+                        <a class="collapse-item" href="{% url 'leaveappdata:settings_sort_form' %}">เพิ่มประเภทการลา</a>
+                        <a class="collapse-item" href="{% url 'leaveappdata:settings_department_form' %}">เพิ่มแผนก</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Divider -->
+            <!-- Divider 
             <hr class="sidebar-divider">
+            -->
 
-            <!-- Nav Item - Charts -->
+            <!-- Nav Item - Charts 
             <li class="nav-item">
                 <a class="nav-link" href="charts.html">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Charts</span></a>
             </li>
+            -->
 
-            <!-- Nav Item - Tables -->
+            <!-- Nav Item - Tables 
             <li class="nav-item">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Tables</span></a>
             </li>
+            -->
 
-            <!-- Divider -->
+            <!-- Divider 
             <hr class="sidebar-divider d-none d-md-block">
+            -->
 
         </ul>
         <!-- End of Sidebar -->
@@ -375,5 +386,10 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+        $('#dataTables_example').DataTable();
+    } );
+    </script>
 </body>
 </html>

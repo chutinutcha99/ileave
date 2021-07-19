@@ -8,7 +8,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">เพิ่มประเภทการลา</h1>
+        <h1 class="h3 mb-0 text-gray-800">เพิ่มแผนก</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
     </div>
@@ -19,12 +19,8 @@
                 <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="">ประเภทการลา</label>
-                        {{form.leave_sort_name | as_crispy_field}}
-                    </div>
-                    <div class="form-group">
-                        <label for="">จำนวนวันลา</label>
-                        {{form.leave_days | as_crispy_field}}
+                        <label for="">แผนก</label>
+                        {{form.leave_department | as_crispy_field}}
                     </div>
                     <button type="submit" class="btn btn-primary mb-4">บันทึก</button>
                 </form>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Leave_Form, Settings_Sort_Form, DEPARTMENT_NAME, DURATION1, DURATION2
+from .models import Leave_Form, Settings_Department_Form, Settings_Sort_Form, DEPARTMENT_NAME, DURATION1, DURATION2
 
 class LeaveForm(forms.ModelForm):
 
@@ -19,6 +19,12 @@ class SettingsSortForm(forms.ModelForm):
 
         fields = '__all__'
 
-        exclude = ('user',)
+class SettingsDepartmentForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Settings_Department_Form
+
+        fields = '__all__'
 
 

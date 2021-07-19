@@ -14,7 +14,7 @@
     <!-- Content Row -->
     <div class="row"> 
         <div class="col-xl-12 col-md-6">
-            <table class="table">
+            <table class="table" id="dataTables_example">
                 <thead class="thead-light">
                   <tr>
                     <th scope="col">วันที่ทำรายการ</th>
@@ -33,8 +33,8 @@
                     <td>{{showdata.leave_sort_name}}</td>
                     <td>{{showdata.start_date|thaidate:"d M Y"}} - {{showdata.end_date|thaidate:"d M Y"}}</td>
                     <td>{{showdata.days_leave}}</td>
-                    <td><a href="{% url 'approve_leave_form' showdata.id 1 %}" class="btn btn-success" name="approve" id="approve" value="approve">อนุมัติ</a>
-                        <a href="{% url 'approve_leave_form' showdata.id 0 %}" class="btn btn-danger" name="reject" id="reject" value="reject">ไม่อนุมัติ</a></td>
+                    <td><a href="{% url 'leaveappdata:approve_leave_form' showdata.id 1 %}" class="btn btn-success" name="approve" id="approve" value="approve">อนุมัติ</a>
+                        <a href="{% url 'leaveappdata:approve_leave_form' showdata.id 0 %}" class="btn btn-danger" name="reject" id="reject" value="reject">ไม่อนุมัติ</a></td>
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -42,31 +42,6 @@
         </div>   
     </div>
     <!-- End Centent Row -->
-
-    <!-- Content Row -->
-    <div class="row">
-        <div class="col-12">
-            <nav>
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a href="" class="page-link" tabindex="-1" aria-disabled="true">Previous</a>
-                    </li>
-                    <li class="page-item">
-                        <a href="" class="page-link">1</a>
-                    </li>
-                    <li class="page-item active" aria-current="page">
-                        <a href="" class="page-link">2 <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="page-item">
-                        <a href="" class="page-link">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a href="" class="page-link">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
 </div>
 <!-- End Content Row -->
 {% endblock %}

@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">รายการ ประเภทการลา</h1>
+        <h1 class="h3 mb-0 text-gray-800">รายการ แผนก</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
     </div>
@@ -16,19 +16,17 @@
                 <thead class="thead-light">
                   <tr>
                     <th scope="col">ลำดับที่</th>  
-                    <th scope="col">ประเภทการลา</th>
-                    <th scope="col">จำนวนวันลา</th>
+                    <th scope="col">ชื่อแผนก</th>
                     <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
-                   {% for showdata in sort_list %} 
+                   {% for showdata in department_list %} 
                   <tr>
                     <th scope="row">{{showdata.id}}</th>
-                    <td>{{showdata.leave_sort_name}}</td>
-                    <td>{{showdata.leave_days}}</td>
-                    <td><a href="{% url 'leaveappdata:settings_sort_form' %}" class="btn btn-success" name="add" id="add" value="add">เพิ่ม</a>
-                        <a href="{% url 'leaveappdata:delete_sort' showdata.id %}" class="btn btn-danger" name="delete" id="delete" value="delete">ลบ</a></td>
+                    <td>{{showdata.leave_department}}</td>
+                    <td><a href="{% url 'leaveappdata:settings_department_form' %}" class="btn btn-success" name="add" id="add" value="add">เพิ่ม</a>
+                        <a href="{% url 'leaveappdata:delete_department' showdata.id %}" class="btn btn-danger" name="delete" id="delete" value="delete">ลบ</a></td>
                   </tr>
                   {% endfor %}
                 </tbody>
