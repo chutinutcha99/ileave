@@ -39,11 +39,12 @@ class Settings_Department_Form(models.Model):
     ('ลาไปศึกษา ฝึกอบรม ปฏิบัติการวิจัย หรือดูงาน', 'ลาไปศึกษา ฝึกอบรม ปฏิบัติการวิจัย หรือดูงาน'),
 )'''
 
+'''
 DEPARTMENT_NAME = (
     ('บริหาร', 'บริหาร'),
     ('จัดซื้อจัดจ้าง', 'จัดซื้อจัดจ้าง'),
     ('บุคคล', 'บุคคล'),
-)
+)'''
 
 DURATION1 = ( 
     ('เต็มวัน', 'เต็มวัน'),
@@ -76,6 +77,7 @@ class Leave_Form(models.Model):
     upload = models.FileField(upload_to='file_uploads')
     leave_contact = models.CharField(max_length=200)
     status = models.CharField(max_length=200, choices=STATUSES_CHOICES, default='รออนุมัติ')
+    numdays = models.IntegerField()
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     created = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -83,18 +85,21 @@ class Leave_Form(models.Model):
         self.status = 'รออนุมัติ'
         self.save()'''
 
-
+    
     def days_leave(self):
         start_date = self.start_date
         end_date = self.end_date
 
         return np.busday_count(start_date, end_date) + 1
+        
 
     class Meta:
         db_table = "leaveappdata_leave_form"
+
     
     def __str__(self):
-        return self.leave_sort_name
+        return self.user.first_name  + ' - ' + str(self.start_date)
+   
 
 
 

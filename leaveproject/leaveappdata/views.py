@@ -1,13 +1,27 @@
+from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import LeaveForm, SettingsSortForm, SettingsDepartmentForm
 from leaveappdata.models import Leave_Form, Settings_Sort_Form, Settings_Department_Form
-from django.db.models import Q
+from django.db.models import Q, Sum, Count, F
 
 # Create your views here.
 @login_required
 def home(request):
-    return render(request, 'leaveappdata/home.html')
+    members = User.objects.count()
+    pending_count = Leave_Form.objects.filter(status='รออนุมัติ').count()
+    approve_count = Leave_Form.objects.filter(status='อนุมัติ').count()
+    rejects_count = Leave_Form.objects.filter(status='ไม่อนุมัติ').count()
+
+    context = {
+        'members': members,
+        'pending_count': pending_count,
+        'approve_count': approve_count,
+        'rejects_count': rejects_count
+        
+        }
+    return render(request, 'leaveappdata/home.html', context)
+
 
 def ChangeActions(user):
     if user.groups.filter(Q(name = 'HR') | Q(name = 'Supervisor')).exists():
@@ -35,6 +49,7 @@ def leave_form(request):
 def showdata_pending(request):
     showdata_p = Leave_Form.objects.filter(status='รออนุมัติ')
     
+    
     context = {'showdata_p': showdata_p}
     return render(request, 'leaveappdata/showdata_pending.html', context)
 
@@ -53,17 +68,17 @@ def showdata_rejected(request):
     return render(request, 'leaveappdata/showdata_rejected.html', context)
 
 @login_required
-def approve_leave_form(id, approve = 1):
+def approve_leave_form(request, id, approve = 1):
     approve_leave = Leave_Form.objects.get(id = id)
     print(approve_leave)
     if approve == 0:
         approve_leave.status = 'ไม่อนุมัติ'
         approve_leave.save()
-        return redirect('/leaveappdata:showdata_rejected/')
+        return redirect('/leaveappdata/showdata_rejected/')
     elif approve == 1:
         approve_leave.status = 'อนุมัติ'
         approve_leave.save()
-        return redirect('/leaveappdata:showdata_approved/')
+        return redirect('/leaveappdata/showdata_approved/')
     
 
 @login_required
@@ -163,4 +178,11 @@ def deleteDepartment(request, id):
     else:
         form = SettingsSortEdit(instance=sort_edit)
     return render(request, 'leaveappdata/settings_sort_edit.html', {'form': form})'''
+
+def statistics(request):
+    #result = Leave_Form.objects.values('user','leave_sort_name__leave_sort_name').annotate(sum=Sum('numdays'), leave_days_sum=Sum('leave_sort_name__leave_days'))
+    result = Leave_Form.objects.values('user', num_leave_sort_name__gt=F('leave_sort_name__leave_sort_name')).annotate(num_numdays=F('numdays') - F('leave_sort_name__leave_days'))
+    context = {'result': result}                           
+    return render(request, 'leaveappdata/statistics.html', context)
+
 

@@ -17,5 +17,7 @@ urlpatterns = [
     path('settings_department_form/',views.settings_department_form, name='settings_department_form'),
     path('settings_department_list/',views.settings_department_list, name='settings_department_list'),
     path('delete_department/<int:id>/',views.deleteDepartment, name='delete_department'),
+    path('statistics/', views.statistics, name='statistics'),
+   
 ]
 
