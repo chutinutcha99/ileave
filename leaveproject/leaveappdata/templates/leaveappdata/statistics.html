@@ -23,9 +23,9 @@
                 <tbody>
                    {% for showdata in result %} 
                   <tr>
-                    <td>{{ showdata.num_leave_sort_name }}</td>
-                    <td>{{ showdata.num_numdays }}</td>
-                    <td>{{ showdata.leave_days }}</td>
+                    <td>{{ showdata.LeaveType }}</td>
+                    <td>{{ showdata.LeaveDay }}</td>
+                    <td>{{ showdata.RemainingLeaveDays }}</td>
                   </tr>
                   {% endfor %}
                 </tbody>

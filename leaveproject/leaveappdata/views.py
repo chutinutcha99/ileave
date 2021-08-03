@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import LeaveForm, SettingsSortForm, SettingsDepartmentForm
 from leaveappdata.models import Leave_Form, Settings_Sort_Form, Settings_Department_Form
-from django.db.models import Q, Sum, Count, F
+from django.db.models import Q, Sum, Count, F, Max
 
 # Create your views here.
 @login_required
@@ -180,8 +180,18 @@ def deleteDepartment(request, id):
     return render(request, 'leaveappdata/settings_sort_edit.html', {'form': form})'''
 
 def statistics(request):
-    #result = Leave_Form.objects.values('user','leave_sort_name__leave_sort_name').annotate(sum=Sum('numdays'), leave_days_sum=Sum('leave_sort_name__leave_days'))
-    result = Leave_Form.objects.values('user', num_leave_sort_name__gt=F('leave_sort_name__leave_sort_name')).annotate(num_numdays=F('numdays') - F('leave_sort_name__leave_days'))
+    result = Leave_Form.objects.annotate(
+                                    LeaveType=F('leave_sort_name__leave_sort_name')
+                                ).values(
+                                    'user',
+                                    'LeaveType' 
+                                ).annotate(
+                                    LeaveDay = Sum('numdays'),
+                                    MaxLeaveDay = Max('leave_sort_name__leave_days')
+                                ).annotate(RemainingLeaveDays = 
+                                    F('MaxLeaveDay') - F('LeaveDay')
+                                )
+                                
     context = {'result': result}                           
     return render(request, 'leaveappdata/statistics.html', context)
 
