@@ -77,7 +77,6 @@ class Leave_Form(models.Model):
     upload = models.FileField(upload_to='file_uploads')
     leave_contact = models.CharField(max_length=200)
     status = models.CharField(max_length=200, choices=STATUSES_CHOICES, default='รออนุมัติ')
-    numdays = models.IntegerField()
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     created = models.DateTimeField(auto_now=False, auto_now_add=True)
 
